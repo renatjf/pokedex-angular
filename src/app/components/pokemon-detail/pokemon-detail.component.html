@@ -1,0 +1,74 @@
+<div
+  class="modal-backdrop"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'pokemon-title-' + pokemon.id"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 [id]="'pokemon-title-' + pokemon.id" class="pokemon-name">
+        {{ pokemon.name }}
+      </h2>
+      <button class="close-button" (click)="onClose()" aria-label="Fechar detalhes">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="pokemon-header">
+        <div class="pokemon-number">#{{ getPokemonNumber() }}</div>
+
+        <div class="pokemon-image">
+          <img
+            [src]="pokemon.sprites.other['official-artwork'].front_default"
+            [alt]="pokemon.name"
+          />
+        </div>
+
+        <div class="pokemon-types">
+          <span
+            *ngFor="let type of pokemon.types"
+            class="type-badge"
+            [style.backgroundColor]="getTypeColor(type.type.name)"
+          >
+            {{ type.type.name }}
+          </span>
+        </div>
+      </div>
+
+      <div class="pokemon-info">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Altura</div>
+            <div class="info-value">{{ pokemon.height / 10 }} m</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Peso</div>
+            <div class="info-value">{{ pokemon.weight / 10 }} kg</div>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Estatísticas Base</h3>
+          <div class="stat-item" *ngFor="let stat of pokemon.stats">
+            <div class="stat-header">
+              <span class="stat-name">{{ getStatName(stat.stat.name) }}</span>
+              <span class="stat-value">{{ stat.base_stat }}</span>
+            </div>
+            <div class="stat-bar">
+              <div class="stat-fill" [style.width.%]="getStatPercentage(stat.base_stat)"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="abilities-section">
+          <h3>Habilidades</h3>
+          <div class="abilities-list">
+            <span *ngFor="let ability of pokemon.abilities" class="ability-badge">
+              {{ ability.ability.name.replace('-', ' ') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

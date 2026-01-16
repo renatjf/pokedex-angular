@@ -1,0 +1,54 @@
+<div class="pagination">
+  <button
+    class="pagination-button prev"
+    (click)="goToPreviousPage()"
+    [disabled]="currentPage === 1"
+    aria-label="Página anterior"
+  >
+    ‹
+  </button>
+
+  <button
+    *ngIf="currentPage > 3"
+    class="pagination-button"
+    (click)="goToPage(1)"
+    aria-label="Ir para página 1"
+  >
+    1
+  </button>
+
+  <span *ngIf="currentPage > 3" class="pagination-ellipsis">...</span>
+
+  <button
+    *ngFor="let page of getPageNumbers()"
+    class="pagination-button"
+    [class.active]="page === currentPage"
+    (click)="goToPage(page)"
+    [attr.aria-label]="'Ir para página ' + page"
+    [attr.aria-current]="page === currentPage ? 'page' : null"
+  >
+    {{ page }}
+  </button>
+
+  <span *ngIf="currentPage < totalPages - 2" class="pagination-ellipsis">...</span>
+
+  <button
+    *ngIf="currentPage < totalPages - 2"
+    class="pagination-button"
+    (click)="goToPage(totalPages)"
+    [attr.aria-label]="'Ir para página ' + totalPages"
+  >
+    {{ totalPages }}
+  </button>
+
+  <button
+    class="pagination-button next"
+    (click)="goToNextPage()"
+    [disabled]="currentPage === totalPages"
+    aria-label="Próxima página"
+  >
+    ›
+  </button>
+</div>
+
+<div class="pagination-info">Página {{ currentPage }} de {{ totalPages }}</div>

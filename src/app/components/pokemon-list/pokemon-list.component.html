@@ -1,0 +1,55 @@
+<div class="pokemon-list-container">
+  <header class="header">
+    <h1>Teste Pokémon Rede Dor</h1>
+    <p>Explore o mundo Pokémon</p>
+  </header>
+
+  <div class="filters" *ngIf="!loading">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="filterPokemon()"
+        placeholder="Buscar Pokémon por nome..."
+        aria-label="Buscar Pokémon por nome"
+      />
+    </div>
+
+    <div class="type-filter">
+      <select [(ngModel)]="selectedType" (change)="filterPokemon()" aria-label="Filtrar por tipo">
+        <option value="">Todos os tipos</option>
+        <option *ngFor="let type of pokemonTypes" [value]="type">
+          {{ type | titlecase }}
+        </option>
+      </select>
+    </div>
+
+    <div class="results-count">Mostrando {{ filteredPokemon.length }} Pokémon</div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Carregando Pokémon...</p>
+  </div>
+
+  <div class="pokemon-grid" *ngIf="!loading">
+    <app-pokemon-card
+      *ngFor="let pokemon of currentPagePokemon"
+      [pokemon]="pokemon"
+      (click)="onPokemonSelect(pokemon)"
+    ></app-pokemon-card>
+  </div>
+
+  <app-pagination
+    *ngIf="!loading && totalPages > 1"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+
+  <app-pokemon-detail
+    *ngIf="selectedPokemon"
+    [pokemon]="selectedPokemon"
+    (close)="onCloseDetail()"
+  ></app-pokemon-detail>
+</div>
